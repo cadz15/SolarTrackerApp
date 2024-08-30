@@ -15,6 +15,12 @@ export default () => {
 
         // 1 minute is 60,000 milliseconds
         const oneMinuteInMilliseconds = 60 * 1000;
+        console.log(
+          "time diff: ",
+          timeDifference,
+          currentTime.getUTCMilliseconds(),
+          prevTime.getUTCMilliseconds()
+        );
 
         if (timeDifference >= oneMinuteInMilliseconds) {
           setOnline(false);

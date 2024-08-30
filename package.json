@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "build": "eas build -p android --profile production"
+    "build": "eas build -p android --profile development"
   },
   "jest": {
     "preset": "jest-expo"
@@ -35,7 +35,8 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-web": "~0.19.10",
-    "zustand": "^4.5.5"
+    "zustand": "^4.5.5",
+    "expo-dev-client": "~4.0.25"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
