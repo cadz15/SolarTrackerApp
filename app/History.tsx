@@ -15,8 +15,6 @@ export default function ModalScreen() {
     return data.month === month;
   })[0];
 
-  console.log(month, history);
-
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", gap: 20, paddingTop: 30 }}>

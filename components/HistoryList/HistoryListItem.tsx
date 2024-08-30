@@ -5,8 +5,6 @@ import { Link } from "expo-router";
 import batteryPercent from "@/util/batteryPercent";
 
 const HistoryListItem = (props: any) => {
-  console.log(props);
-
   return (
     <Link href={`/History?month=${props?.data?.month}`} asChild>
       <TouchableOpacity style={styles.button}>
