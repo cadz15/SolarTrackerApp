@@ -35,8 +35,10 @@ export default function TabTwoScreen() {
             if (snapshot.exists()) {
               const data = snapshot.val();
 
-              const solarHistories = Object.entries(data).map(
-                ([key, value]: [string, any]) => {
+              const solarHistories = Object.entries(data)
+                .sort()
+                .reverse()
+                .map(([key, value]: [string, any]) => {
                   const solarSetData: SolarDataInterface[] = [];
 
                   Object.entries(value).forEach(
@@ -58,8 +60,7 @@ export default function TabTwoScreen() {
                     avgBattery: avg.averageBatteryVoltage,
                     solarData: solarSetData,
                   };
-                }
-              );
+                });
 
               setSolarHistories(solarHistories);
             } else {

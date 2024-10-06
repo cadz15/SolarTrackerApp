@@ -7,19 +7,23 @@ import TodayLineChart from "@/components/chart/TodayLineChart";
 import Feather from "@expo/vector-icons/Feather";
 import app from "@/firebase/firebaseConfig";
 
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, onValue, get, child } from "firebase/database";
 import { observeDatabase, sortObjectByKey } from "@/firebase/firebaseDatabase";
 import useSolarDataStore from "@/store/useSolarDataStore";
 import { useEffect, useState } from "react";
 import batteryPercent from "@/util/batteryPercent";
 import useCheckIdle from "@/hooks/useCheckIdle";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function TabOneScreen() {
   const [solarCurrent, setSolarCurrent] = useState<String>("-");
   const [solarVoltage, setSolarVoltage] = useState<String>("-");
   const [batteryVoltage, setBatteryVoltage] = useState<String>("-");
 
-  const { currentData, isOnline } = useSolarDataStore();
+  const isFocused = useIsFocused();
+
+  const { currentData, isOnline, batterySetting, setBatterySetting } =
+    useSolarDataStore();
   const db = getDatabase(app);
 
   const handleRefreshDevice = async () => {
@@ -28,24 +32,36 @@ export default function TabOneScreen() {
     //convert epoch time to local date
     const newDate = new Date(time);
     let timeString =
-      newDate.getUTCMonth() +
-      1 +
+      String(newDate.getUTCMonth() + 1).padStart(2, "0") +
       "-" +
-      newDate.getUTCDate() +
+      String(newDate.getUTCDate()).padStart(2, "0") +
       "-" +
       newDate.getUTCFullYear() +
       "/" +
-      newDate.getUTCHours() +
+      String(newDate.getUTCHours()).padStart(2, "0") +
       ":" +
-      newDate.getUTCMinutes() +
+      String(newDate.getUTCMinutes()).padStart(2, "0") +
       ":" +
-      newDate.getUTCSeconds();
+      String(newDate.getUTCSeconds()).padStart(2, "0");
 
     await set(ref(db, "solarData/" + timeString), {
       solarCurrent: `${Math.floor(Math.random() * 300) + 150}Watts`,
       solarVoltage: `${Math.floor(Math.random() * 10) + 3}V`,
-      batteryVoltage: `${Math.floor(Math.random() * 3.7) + 1}V`,
+      batteryVoltage: `${Math.floor(Math.random() * 12.7) + 1}V`,
     });
+  };
+
+  const fetchSettings = async () => {
+    try {
+      const dbRef = ref(db);
+      const snapshot = await get(child(dbRef, "solarSetting/"));
+
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+
+        setBatterySetting(data);
+      }
+    } catch (error) {}
   };
 
   observeDatabase();
@@ -61,6 +77,10 @@ export default function TabOneScreen() {
   }, [currentData]);
 
   useCheckIdle();
+
+  useEffect(() => {
+    fetchSettings();
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -83,7 +103,7 @@ export default function TabOneScreen() {
           </Text>
         )}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             height: 30,
             alignItems: "center",
@@ -92,7 +112,7 @@ export default function TabOneScreen() {
           onPress={handleRefreshDevice}
         >
           <Feather name="refresh-ccw" size={18} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <ScrollView>
@@ -111,7 +131,7 @@ export default function TabOneScreen() {
                 Solar Panel Power Generated
               </Text>
               <Text style={{ fontSize: 16 }}>
-                Current:{" "}
+                Watt:{" "}
                 <Text style={{ color: "red", fontWeight: "bold" }}>
                   {solarCurrent}
                 </Text>
@@ -146,10 +166,16 @@ export default function TabOneScreen() {
                 Percentage:{" "}
                 <Text style={{ color: "red", fontWeight: "bold" }}>
                   {Number.isNaN(
-                    batteryPercent(parseFloat(batteryVoltage.toString()))
+                    batteryPercent(
+                      parseFloat(batteryVoltage.toString()),
+                      batterySetting
+                    )
                   )
                     ? "0"
-                    : batteryPercent(parseFloat(batteryVoltage.toString()))}
+                    : batteryPercent(
+                        parseFloat(batteryVoltage.toString()),
+                        batterySetting
+                      )}
                   %
                 </Text>
               </Text>

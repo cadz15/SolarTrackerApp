@@ -3,6 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Feather from "@expo/vector-icons/Feather";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -47,6 +48,18 @@ export default function TabLayout() {
           title: "History",
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="history" size={24} color={color} />
+          ),
+          headerStyle: {
+            backgroundColor: "#009FBD",
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="three"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color }) => (
+            <Feather name="settings" size={24} color={color} />
           ),
           headerStyle: {
             backgroundColor: "#009FBD",

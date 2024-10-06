@@ -1,12 +1,13 @@
-export default (voltage: number) => {
-  // Define the reference voltage for 100% battery
-  const fullChargeVoltage = 3.7;
+import { SolarBatterySetting } from "@/store/useSolarDataStore";
 
-  // Calculate the battery percentage
-  // Assuming the battery is between 0V and 3.7V, adjust if necessary
-  let percentage = (voltage / fullChargeVoltage) * 100;
+export default (voltage: number, batterySetting: SolarBatterySetting) => {
+  const fullChargeVoltage =
+    parseFloat(batterySetting.chargedVoltage) -
+    parseFloat(batterySetting.lowBatteryVoltage);
+  const currentVoltage = voltage - parseFloat(batterySetting.lowBatteryVoltage);
 
-  // Ensure the percentage is between 0 and 100
+  let percentage = (currentVoltage / fullChargeVoltage) * 100;
+
   percentage = Math.max(0, Math.min(100, percentage));
 
   return percentage.toFixed(2);

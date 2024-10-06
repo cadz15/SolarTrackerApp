@@ -45,6 +45,7 @@ export const observeDatabase = async () => {
       newDate.getUTCFullYear();
 
     const solarRealtimeData = ref(db, "solarData/" + timeString);
+
     const { setCurrentData, currentData, setLastTimeChanged, setOnline } =
       useSolarDataStore();
 

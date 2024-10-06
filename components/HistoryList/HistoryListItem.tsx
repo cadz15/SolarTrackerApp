@@ -3,8 +3,11 @@ import React from "react";
 import { Entypo } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import batteryPercent from "@/util/batteryPercent";
+import useSolarDataStore from "@/store/useSolarDataStore";
 
 const HistoryListItem = (props: any) => {
+  const { batterySetting } = useSolarDataStore();
+
   return (
     <Link href={`/History?month=${props?.data?.month}`} asChild>
       <TouchableOpacity style={styles.button}>
@@ -17,10 +20,16 @@ const HistoryListItem = (props: any) => {
               <Text style={styles.textHeader}>
                 🔋
                 {Number.isNaN(
-                  batteryPercent(parseFloat(props?.data?.avgBattery))
+                  batteryPercent(
+                    parseFloat(props?.data?.avgBattery),
+                    batterySetting
+                  )
                 )
                   ? "0"
-                  : batteryPercent(parseFloat(props?.data?.avgBattery))}
+                  : batteryPercent(
+                      parseFloat(props?.data?.avgBattery),
+                      batterySetting
+                    )}
                 %
               </Text>
             </View>

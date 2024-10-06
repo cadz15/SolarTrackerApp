@@ -2,7 +2,7 @@ import useSolarDataStore from "@/store/useSolarDataStore";
 import { useEffect } from "react";
 
 export default () => {
-  const { lastTimeChanged, setOnline } = useSolarDataStore();
+  const { lastTimeChanged, isOnline, setOnline } = useSolarDataStore();
   useEffect(() => {
     // Function to update the time
     const checkIdle = () => {
@@ -29,9 +29,9 @@ export default () => {
     };
 
     // Set up the interval
-    const intervalId = setInterval(checkIdle, 30000); // Runs every 1000 ms (1 second)
+    const intervalId = setInterval(checkIdle, 3000); // Runs every 3000 ms (3 seconds)
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, []);
+  }, [lastTimeChanged]);
 };

@@ -9,7 +9,7 @@ import batteryPercent from "@/util/batteryPercent";
 export default function ModalScreen() {
   const { month } = useLocalSearchParams();
 
-  const { solarHistories } = useSolarDataStore();
+  const { solarHistories, batterySetting } = useSolarDataStore();
 
   const history = solarHistories?.filter((data) => {
     return data.month === month;
@@ -26,10 +26,16 @@ export default function ModalScreen() {
           <Text style={styles.widgetTitle}>🔋 Battery</Text>
           <Text style={styles.widgetBodyText}>
             {Number.isNaN(
-              batteryPercent(parseFloat(history?.avgBattery?.toString()))
+              batteryPercent(
+                parseFloat(history?.avgBattery?.toString()),
+                batterySetting
+              )
             )
               ? "0"
-              : batteryPercent(parseFloat(history?.avgBattery?.toString()))}
+              : batteryPercent(
+                  parseFloat(history?.avgBattery?.toString()),
+                  batterySetting
+                )}
             %
           </Text>
         </View>

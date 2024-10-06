@@ -14,15 +14,24 @@ export interface SolarTable {
   solarData: SolarDataInterface[] | null;
 }
 
+export interface SolarBatterySetting {
+  chargedVoltage: string;
+  lowBatteryVoltage: string;
+  cutOffPercent: string;
+  email: string;
+}
+
 export interface SolarDataStore {
   currentData: SolarDataInterface[] | null;
   solarHistories: SolarTable[] | null;
   isOnline: boolean;
   lastTimeChanged: String;
+  batterySetting: SolarBatterySetting;
   setSolarHistories: (solarHistory: SolarTable[]) => void;
   setCurrentData: (solarData: SolarDataInterface[]) => void;
   setLastTimeChanged: (timeChanged: String) => void;
   setOnline: (online: boolean) => void;
+  setBatterySetting: (batterySetting: SolarBatterySetting) => void;
 }
 
 const useSolarDataStore = create<SolarDataStore>(
@@ -31,6 +40,12 @@ const useSolarDataStore = create<SolarDataStore>(
     solarHistories: null,
     isOnline: false,
     lastTimeChanged: "",
+    batterySetting: {
+      chargedVoltage: "13.7",
+      lowBatteryVoltage: "10.5",
+      cutOffPercent: "0",
+      email: "",
+    },
     setSolarHistories: (solarHistory: SolarTable[]) =>
       set({
         solarHistories: solarHistory,
@@ -42,6 +57,8 @@ const useSolarDataStore = create<SolarDataStore>(
     setLastTimeChanged: (timeChanged: String) =>
       set({ lastTimeChanged: timeChanged }),
     setOnline: (online: boolean) => set({ isOnline: online }),
+    setBatterySetting: (batterySetting: SolarBatterySetting) =>
+      set({ batterySetting }),
   })
 );
 
