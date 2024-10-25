@@ -136,12 +136,12 @@ export default function TabOneScreen() {
                   {solarCurrent}
                 </Text>
               </Text>
-              <Text style={{ fontSize: 16 }}>
+              {/* <Text style={{ fontSize: 16 }}>
                 Voltage:{" "}
                 <Text style={{ color: "red", fontWeight: "bold" }}>
                   {solarVoltage}
                 </Text>
-              </Text>
+              </Text> */}
             </View>
           </View>
           <View style={styles.rightCircledContainer}>

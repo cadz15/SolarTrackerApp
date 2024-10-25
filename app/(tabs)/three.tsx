@@ -24,11 +24,17 @@ const three = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
+  const [inputPassword, setInputPassword] = useState("");
 
-  const { setBatterySetting } = useSolarDataStore();
+  const { password, setBatterySetting, setPassword, setLogin } =
+    useSolarDataStore();
 
   const isFocused = useIsFocused();
   const db = getDatabase(app);
+
+  const handleLogOut = () => {
+    setLogin(false);
+  };
 
   const handleChargeVoltage = (text: string) => {
     const decimalPattern = /^\d*\.?\d{0,2}$/;
@@ -110,6 +116,7 @@ const three = () => {
           cutOffPercent: cutOffPercent,
           cutOffVoltage: cutOffVoltage,
           email: emailAdd,
+          password: inputPassword,
         }).finally(() => {
           setBatterySetting({
             chargedVoltage: chargedVoltage,
@@ -117,6 +124,8 @@ const three = () => {
             cutOffPercent: cutOffPercent,
             email: emailAdd,
           });
+
+          setPassword(inputPassword);
           setIsSaving(false);
           setIsSuccess(true);
         });
@@ -204,6 +213,17 @@ const three = () => {
             />
           </View>
 
+          <View style={style.inputGroup}>
+            <Text style={style.label}>Password </Text>
+            <TextInput
+              value={inputPassword}
+              placeholder="Password"
+              onChangeText={setInputPassword}
+              secureTextEntry={true}
+              style={style.input}
+            />
+          </View>
+
           <TouchableOpacity
             style={style.btnSave}
             disabled={isSaving}
@@ -214,6 +234,14 @@ const three = () => {
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
+
+      <View style={{ padding: 24 }}>
+        <TouchableOpacity style={style.btnLogout} onPress={handleLogOut}>
+          <Text style={{ fontSize: 22, color: "black", textAlign: "center" }}>
+            Log-out
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -235,6 +263,14 @@ const style = StyleSheet.create({
     gap: 6,
     backgroundColor: "#5dc0f5",
     borderColor: "#3a98c9",
+  },
+  btnLogout: {
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 8,
+    gap: 6,
+    backgroundColor: "transparent",
+    borderColor: "#afb3b0",
   },
   label: {
     fontSize: 18,

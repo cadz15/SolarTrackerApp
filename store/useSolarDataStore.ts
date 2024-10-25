@@ -26,12 +26,16 @@ export interface SolarDataStore {
   solarHistories: SolarTable[] | null;
   isOnline: boolean;
   lastTimeChanged: String;
+  password: string;
   batterySetting: SolarBatterySetting;
+  isLogin: boolean;
   setSolarHistories: (solarHistory: SolarTable[]) => void;
   setCurrentData: (solarData: SolarDataInterface[]) => void;
   setLastTimeChanged: (timeChanged: String) => void;
   setOnline: (online: boolean) => void;
   setBatterySetting: (batterySetting: SolarBatterySetting) => void;
+  setLogin: (logedin: boolean) => void;
+  setPassword: (passwordString: string) => void;
 }
 
 const useSolarDataStore = create<SolarDataStore>(
@@ -39,6 +43,8 @@ const useSolarDataStore = create<SolarDataStore>(
     currentData: null,
     solarHistories: null,
     isOnline: false,
+    isLogin: false,
+    password: "",
     lastTimeChanged: "",
     batterySetting: {
       chargedVoltage: "13.7",
@@ -59,6 +65,8 @@ const useSolarDataStore = create<SolarDataStore>(
     setOnline: (online: boolean) => set({ isOnline: online }),
     setBatterySetting: (batterySetting: SolarBatterySetting) =>
       set({ batterySetting }),
+    setLogin: (logedin: boolean) => set({ isLogin: logedin }),
+    setPassword: (passwordString: string) => set({ password: passwordString }),
   })
 );
 

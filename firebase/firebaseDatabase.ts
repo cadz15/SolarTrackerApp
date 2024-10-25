@@ -37,10 +37,9 @@ export const observeDatabase = async () => {
     const time = Date.now();
     const newDate = new Date(time);
     let timeString =
-      newDate.getUTCMonth() +
-      1 +
+      String(newDate.getUTCMonth() + 1).padStart(2, "0") +
       "-" +
-      newDate.getUTCDate() +
+      String(newDate.getUTCDate()).padStart(2, "0") +
       "-" +
       newDate.getUTCFullYear();
 
